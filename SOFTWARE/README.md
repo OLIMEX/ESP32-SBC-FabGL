@@ -2,4 +2,4 @@
 
 [CH32V003_Driver](CH32V003_Driver/) contains source of the driver needed to communicate with CH32V003 chip.
 
-[FabGL_Nunchuck](FabGL_Nunchuck/) contains source of device driver to use WiiNunchuk device with FabGL library. It is in fabgl namespace.
+[FabGL_Nunchuk](FabGL_Nunchuk/) contains source of device driver to use WiiNunchuk device with FabGL library. It is in fabgl namespace.
