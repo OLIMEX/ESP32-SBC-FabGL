@@ -1,0 +1,9 @@
+Notable hardware changes for ESP32-SBC-FabGL
+
+Notice that the board is designed with KiCAD
+
+---
+
+Hardware revision A:
+
+- initial release
