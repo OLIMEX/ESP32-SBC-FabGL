@@ -11,9 +11,7 @@
  * microcontroller manufactured by Nanjing Qinheng Microelectronics.
  *******************************************************************************/
 #include <debug.h>
-
-static uint8_t  p_us = 0;
-static uint16_t p_ms = 0;
+#include <Uptime.h>
 
 /*********************************************************************
  * @fn      Delay_Init
@@ -24,8 +22,7 @@ static uint16_t p_ms = 0;
  */
 void Delay_Init(void)
 {
-    p_us = SystemCoreClock / 8000000;
-    p_ms = (uint16_t)p_us * 1000;
+    Uptime_Init();
 }
 
 /*********************************************************************
@@ -39,17 +36,8 @@ void Delay_Init(void)
  */
 void Delay_Us(uint32_t n)
 {
-    uint32_t i;
-
-    SysTick->SR &= ~(1 << 0);
-    i = (uint32_t)n * p_us;
-
-    SysTick->CMP = i;
-    SysTick->CNT = 0;
-    SysTick->CTLR |=(1 << 0);
-
-    while((SysTick->SR & (1 << 0)) != (1 << 0));
-    SysTick->CTLR &= ~(1 << 0);
+    uint32_t t = Uptime_Us();
+    while((uint32_t)(Uptime_Us() - t) <= n);
 }
 
 /*********************************************************************
@@ -63,17 +51,8 @@ void Delay_Us(uint32_t n)
  */
 void Delay_Ms(uint32_t n)
 {
-    uint32_t i;
-
-    SysTick->SR &= ~(1 << 0);
-    i = (uint32_t)n * p_ms;
-
-    SysTick->CMP = i;
-    SysTick->CNT = 0;
-    SysTick->CTLR |=(1 << 0);
-
-    while((SysTick->SR & (1 << 0)) != (1 << 0));
-    SysTick->CTLR &= ~(1 << 0);
+    uint32_t t = Uptime_Ms();
+    while((uint32_t)(Uptime_Ms() - t) <= n);
 }
 
 /*********************************************************************

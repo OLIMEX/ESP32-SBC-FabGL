@@ -1,5 +1,12 @@
 #include "Mode_SPI.h"
 
+#undef _DEBUG_
+#ifdef DEBUG_MODE_SPI
+#define _DEBUG_ 1
+#else
+#define _DEBUG_ 0
+#endif
+
 static uint8_t Phase=0, Polarity=0, Leading=1, Trailing=0, ClockDelay=20;
 
 void Soft_SPI_Init (uint8_t Mode, uint32_t Clock)
@@ -32,25 +39,21 @@ void Soft_SPI_Init (uint8_t Mode, uint32_t Clock)
     Leading = !Polarity;
     Trailing = Polarity;
 
-    LOG_DEBUG("Polarity: %d, Phase: %d\n\r", Polarity, Phase);
+    LOG_DEBUG("POL: %d, PHA: %d" EOL, Polarity, Phase);
 
     ClockDelay = 1000000 / Clock / 2;
     if (ClockDelay < SPI_SCK_MIN_DELAY) {
         ClockDelay = SPI_SCK_MIN_DELAY;
     }
+    LOG_DEBUG("CLOCK_DELAY: %d" EOL, ClockDelay);
 
     SPI_SCK_EDGE (Trailing);
     SPI_SS_HIGH ();
 }
 
-uint32_t Soft_SPI_Transfer (uint32_t SendData, uint8_t Size)
+static uint32_t Soft_SPI_Transfer (uint32_t SendData, uint8_t Size)
 {
     uint32_t ReceivedData = 0, Mask=1<<(Size-1);
-    if (!((Size == 8) || (Size == 16) || (Size == 32)))
-    {
-        LOG_DEBUG("Invalid size!\n\r");
-        return 0;
-    }
 
     SPI_SS_LOW ();
     DELAY_CS();

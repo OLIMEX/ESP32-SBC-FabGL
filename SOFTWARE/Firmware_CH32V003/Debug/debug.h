@@ -20,18 +20,32 @@
 #include <ch32v00x.h>
 #include <stdio.h>
 
-#define LOG_DEBUG_ENABLED
+//#define LOG_DEBUG_ENABLED
+//#define DEBUG_MODE_GPIO
+//#define DEBUG_MODE_INT
+//#define DEBUG_MODE_PWR
+//#define DEBUG_MODE_I2C
+//#define DEBUG_MODE_SPI
+//#define DEBUG_MODE_UART
 
 #ifdef LOG_DEBUG_ENABLED
-    #define LOG_DEBUG(f_, ...) printf((f_), ##__VA_ARGS__)
+#define _DEBUG_ 1
 #else
-    #define LOG_DEBUG(f_, ...)
+#define _DEBUG_ 0
 #endif
+
+#ifdef LOG_DEBUG_ENABLED
+#define LOG_DEBUG(f_, ...) do { if (_DEBUG_) printf((f_), ##__VA_ARGS__); } while(0)
+#else
+#define LOG_DEBUG(f_, ...)
+#endif
+
+#define EOL "\n"
 
 /* UART Printf Definition */
 #define DEBUG_UART1    1
 
-/* DEBUG UATR Definition */
+/* DEBUG UART Definition */
 #ifndef DEBUG
 #define DEBUG   DEBUG_UART1
 #endif

@@ -3,7 +3,7 @@
 
 #include <ch32v00x.h>
 
-#define SPI_SCK_MIN_DELAY   20
+#define SPI_SCK_MIN_DELAY   10
 #define SPI_CS_DELAY        10
 #define DELAY_CLK(Delay) Delay_Us(Delay)
 #define DELAY_CS()       Delay_Us(SPI_CS_DELAY)
@@ -36,7 +36,6 @@
 #define SPI_SS_RCC_APB2Periph  RCC_APB2Periph_GPIOD
 
 void Soft_SPI_Init (uint8_t Mode, uint32_t Clock);
-uint32_t Soft_SPI_Transfer (uint32_t SendData, uint8_t Size);
 uint8_t Soft_SPI_Transfer8 (uint8_t SendData);
 uint16_t Soft_SPI_Transfer16 (uint16_t SendData);
 uint32_t Soft_SPI_Transfer32 (uint32_t SendData);
