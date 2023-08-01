@@ -1,5 +1,5 @@
 # Flash ESP32-S2 with CH32v003programmer firmware:
-esptool.py -p <PORT> -b 460800 --before=no_reset --after=no_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000./bootloader.bin 0x10000 ./usb_sandbox.bin 0x8000 ./partition-table.bin
+esptool.py -p <PORT> -b 460800 --before=no_reset --after=no_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 4MB 0x1000 ./bootloader.bin 0x10000 ./usb_sandbox.bin 0x8000 ./partition-table.bin
 
 # All bin files were built using sources from:
 # https://github.com/cnlohr/esp32s2-cookbook/tree/master/ch32v003programmer
