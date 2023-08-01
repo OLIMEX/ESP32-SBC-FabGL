@@ -102,6 +102,9 @@
 #define CH32_SPI_DATA_L                 0x00fc   // SPI 16-bit transfer data LSB
 #define CH32_SPI_DATA_H                 0x00fd   // SPI 16-bit transfer data MSB
 
+#define CH32_VERSION_L                  0x00fe   // CH32V003 firmware version - minor
+#define CH32_VERSION_H                  0x00ff   // CH32V003 firmware version - major
+
 //////////////////////////////////////////////////////////////////////////////////////
 // Machine
 
@@ -166,7 +169,7 @@ void Machine::init()
 
   m_MCP23S17.begin();
   m_MCP23S17Sel = 0;
-  
+
   m_CH32V003.begin();
   m_CH32V003_GPIO_Sel = 0;
   m_CH32V003_I2C_Clock = 0;
@@ -176,7 +179,7 @@ void Machine::init()
   m_CH32V003_SPI_Clock = 0;
   m_CH32V003_SPI_Data8 = 0;
   m_CH32V003_SPI_Data16 = 0;
-  
+
   m_BIOS.init(this);
 
   i8086::setCallbacks(this, readPort, writePort, writeVideoMemory8, writeVideoMemory16, readVideoMemory8, readVideoMemory16, interrupt);
@@ -346,7 +349,7 @@ void Machine::runTask(void * pvParameters)
 
   m->init();
 
-  while (true) {
+	while (true) {
 
     if (m->m_reset)
       m->reset();
@@ -360,7 +363,7 @@ void Machine::runTask(void * pvParameters)
     i8086::step();
     m->tick();
 
-  }
+	}
 }
 
 
@@ -761,7 +764,7 @@ void Machine::writePort(void * context, int address, uint8_t value)
       break;
 
     default:
-      printf("OUT %04x=%02x\n", address, value);
+      //printf("OUT %04x=%02x\n", address, value);
       break;
   }
 }
@@ -886,9 +889,15 @@ uint8_t Machine::readPort(void * context, int address)
     case EXTIO_GPIO:
       return m->m_MCP23S17.readGPIO(m->m_MCP23S17Sel);
 
-    // I/O expander CH32V003 
+    // I/O expander CH32V003
     case CH32_STATUS:
       return m->m_CH32V003.available();
+
+    case CH32_VERSION_L:
+      return (uint8_t)(m->m_CH32V003.version() & 0xFF);
+
+    case CH32_VERSION_H:
+      return (uint8_t)(m->m_CH32V003.version() >> 8);
 
     // I/O expander CH32V003 GPIO
     case CH32_GPIO_SELECT:
@@ -931,7 +940,7 @@ uint8_t Machine::readPort(void * context, int address)
 
   }
 
-  printf("IN %04X\n", address);
+  //printf("IN %04X\n", address);
   return 0xff;
 }
 
