@@ -3,6 +3,13 @@ Notable hardware changes for ESP32-SBC-FabGL
 Notice that the board is designed with KiCAD
 
 ---
+Hardware revision B (minor changes):
+
+- Added description of Access, Bus, UEXT, and LCD connectors;
+- Changed packages of 820R and 430R to 0402;
+- Changed value of ESP32 chip to ESP32-WROVER-E;
+- Speaker  govoritelq se запазва се като на AgonLight2.
+- Improved VGA resistor values 430R changed to 1%.
 
 Hardware revision A:
 
